@@ -1,10 +1,14 @@
 package com.Task1.OodlesA1.Service;
 
+import com.Task1.OodlesA1.Domain.Company;
+import com.Task1.OodlesA1.Domain.Department;
 import com.Task1.OodlesA1.Domain.Employee;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeCreateDto;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeUpdateDto;
-import com.Task1.OodlesA1.Dtos.ResponseDto.getEmployees;
+import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.EmployeeIsNotPresent;
+import com.Task1.OodlesA1.Repository.CompanyRepository;
+import com.Task1.OodlesA1.Repository.DepartmentRepository;
 import com.Task1.OodlesA1.Repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,17 +20,43 @@ import java.util.Optional;
 public class EmployeeService {
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
-    public String add(EmployeeCreateDto employeeCreateDto) {
-        Employee E=new Employee();
-        E.setEmpName(employeeCreateDto.getName());
-        E.setAge(employeeCreateDto.getAge());
-        E.setEmail(employeeCreateDto.getEmail());
-        E.setDesignation(employeeCreateDto.getDesignation());
-        E.setGender(employeeCreateDto.getGender());
-        E.setDepartmentType(employeeCreateDto.getDepartmentType());
-    employeeRepository.save(E);
+    @Autowired
+   private EmployeeRepository employeeRepository;
+
+    public String add(EmployeeCreateDto employeeCreateDto) throws DepartmentIsNotPresent
+    {
+        Employee e=new Employee();
+        e.setEmpName(employeeCreateDto.getName());
+        e.setAge(employeeCreateDto.getAge());
+        e.setEmail(employeeCreateDto.getEmail());
+        e.setDesignation(employeeCreateDto.getDesignation());
+        e.setGender(employeeCreateDto.getGender());
+        e.setDepartmentType(employeeCreateDto.getDepartmentType());
+        if(employeeCreateDto.getCompanyId()!=null){
+            Optional<Company>companyOptional=companyRepository.findById(employeeCreateDto.getCompanyId());
+            if(companyOptional.isPresent()){
+                Company company=companyOptional.get();
+              e.setCompany(company);
+            }
+        }
+     if(employeeCreateDto.getDepartmentId()==null) {
+         throw new DepartmentIsNotPresent("Department is not found");
+     }
+        Optional<Department>department=departmentRepository.findById(employeeCreateDto.getDepartmentId());
+        if(department.isPresent()){
+            e.setDepartment(department.get());
+        }
+        department.get().getEmployeeList().add(e);
+
+    //we only save parent child saved automatically
+    departmentRepository.save(department.get());
+
+
+    employeeRepository.save(e);
     return "Employee has been Added";
     }
 
@@ -36,6 +66,7 @@ public class EmployeeService {
         Optional<Employee> existingEmployee = employeeRepository.findById(Long.valueOf(empID));
         if (existingEmployee.isPresent()) {
             employeeRepository.delete(existingEmployee.get());
+
             return "record deleted successfully";
         } else {
             throw new EmployeeIsNotPresent("Employee is not Present with this Id"+empID);
@@ -77,6 +108,12 @@ public class EmployeeService {
             throw new RuntimeException("Employee is not there");
         }
     }
+
+
+
+
+
+
 
     public String changeName(Integer id, String newName) {
         Optional<Employee>employees= employeeRepository.findById(Long.valueOf(id));

@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="employee")
 @Data
@@ -32,14 +35,17 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private DepartmentType departmentType;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn
-    private Department department;
+     @OneToOne
+     @JoinColumn
+     Company company;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn
-    private Company company;
+     @ManyToOne
+     @JoinColumn
+     Department department;
+
+
+
+
+
 
 }

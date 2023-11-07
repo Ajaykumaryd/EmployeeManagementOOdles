@@ -22,12 +22,17 @@ public class Department {
     private DepartmentType departmentType;
     private String HOD;
 
-    @OneToMany(mappedBy="department",cascade = CascadeType.ALL)
-    private List<Employee> employeeList=new ArrayList<>();
-
     @ManyToOne
     @JoinColumn
     private Company company;
+
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
+    private List<Employee>employeeList=new ArrayList<>();
+
+
+
+
+
 
 
 

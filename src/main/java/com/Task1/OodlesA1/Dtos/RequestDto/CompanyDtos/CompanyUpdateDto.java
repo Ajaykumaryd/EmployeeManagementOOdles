@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CompanyUpdateDto {
+
     private Long cid;
 
     private String companyName;

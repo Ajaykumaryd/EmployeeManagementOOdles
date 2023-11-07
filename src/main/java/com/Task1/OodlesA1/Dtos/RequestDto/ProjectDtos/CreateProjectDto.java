@@ -13,4 +13,6 @@ public class CreateProjectDto {
 
     private Date endDate;
 
+    private Integer employeeId;
+
 }
