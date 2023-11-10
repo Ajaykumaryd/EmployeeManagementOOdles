@@ -9,8 +9,9 @@ public class DepartmentCreateDto {
 
     private DepartmentType departmentType;
     private Long noOfEmployees;
-    private String HOD;
+    private String Hod;
     private Long companyId;
+
 
 
 }

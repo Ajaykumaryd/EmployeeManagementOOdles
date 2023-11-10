@@ -35,13 +35,14 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private DepartmentType departmentType;
 
-     @OneToOne
+     @ManyToOne
      @JoinColumn
      Company company;
 
      @ManyToOne
      @JoinColumn
      Department department;
+
 
 
 

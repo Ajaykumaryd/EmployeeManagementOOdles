@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name ="department")
+@Table(name ="departments")
 @Data
 public class Department {
 
@@ -20,19 +20,16 @@ public class Department {
     private Long noOFEmployees;
     @Enumerated(EnumType.STRING)
     private DepartmentType departmentType;
-    private String HOD;
+
+    private String Hod;
 
     @ManyToOne
     @JoinColumn
     private Company company;
 
+
     @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
-    private List<Employee>employeeList=new ArrayList<>();
-
-
-
-
-
+    List<Employee>employeeList=new ArrayList<>();
 
 
 

@@ -5,6 +5,7 @@ import com.Task1.OodlesA1.Dtos.RequestDto.CompanyDtos.CompanyCreateDto;
 import com.Task1.OodlesA1.Dtos.RequestDto.CompanyDtos.CompanyUpdateDto;
 import com.Task1.OodlesA1.Exceptions.*;
 import com.Task1.OodlesA1.Service.CompanyService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(UrlMapping.COMPANY)
+@SecurityRequirement(name ="employee")
 public class CompanyController {
-
    @Autowired
    private CompanyService companyService;
 

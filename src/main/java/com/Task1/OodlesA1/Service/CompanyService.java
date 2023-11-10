@@ -19,11 +19,7 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    @Autowired
-    DepartmentRepository departmentRepository;
 
-    @Autowired
-    EmployeeRepository employeeRepository;
     public String add(CompanyCreateDto companyCreateDto){
         Company c = new Company();
         c.setCompanyName(companyCreateDto.getCompanyName());

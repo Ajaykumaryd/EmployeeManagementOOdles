@@ -25,6 +25,10 @@ public class Company {
     @OneToMany(mappedBy = "company",cascade = CascadeType.ALL)
     List<Department>departmentList=new ArrayList<>();
 
+    @OneToMany(mappedBy = "company",cascade = CascadeType.ALL)
+    List<Employee>employeeList=new ArrayList<>();
+
+
 
 
 }

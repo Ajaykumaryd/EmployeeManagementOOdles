@@ -15,36 +15,36 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
-    @Autowired
-    EmployeeRepository employeeRepository;
-    @Autowired
-    ProjectRepository projectRepository;
-
-    public String addProject(CreateProjectDto createProjectDto) {
-    Project project=new Project();
-    project.setProjectName(createProjectDto.getProjectName());
-    project.setStartingDate(createProjectDto.getStartingDate());
-    project.setEndDate(createProjectDto.getEndDate());
-    if(createProjectDto.getEmployeeId()!=null){
-        Optional<Employee>employee=employeeRepository.findById(Long.valueOf(createProjectDto.getEmployeeId()));
-        if(employee.isPresent()){
-            Employee employee1=employee.get();
-            project.setEmployee(employee1);
-        }
-    }
-    projectRepository.save(project);
-    return "Project Added Successfully";
-    }
-
-
-    public String delete(Long projectId) throws ProjectIsNotPresent {
-    Optional<Project>projectOptional=projectRepository.findById(projectId);
-    if(projectOptional.isPresent()){
-     projectRepository.delete(projectOptional.get());
-    }else{
-        throw new ProjectIsNotPresent("Project is Not Found");
-    }
-    return "Project deleted SucessFully";
-
-    }
+//    @Autowired
+//    EmployeeRepository employeeRepository;
+//    @Autowired
+//    ProjectRepository projectRepository;
+//
+//    public String addProject(CreateProjectDto createProjectDto) {
+//    Project project=new Project();
+//    project.setProjectName(createProjectDto.getProjectName());
+//    project.setStartingDate(createProjectDto.getStartingDate());
+//    project.setEndDate(createProjectDto.getEndDate());
+//        Optional<Employee>employee=employeeRepository.findById(Long.valueOf(createProjectDto.getEmployeeId()));
+//    if(createProjectDto.getEmployeeId()!=null){
+//        if(employee.isPresent()){
+//            Employee employee1=employee.get();
+//            project.setEmployee(employee1);
+//        }
+//    }
+////    employeeRepository.save(employee.get());
+//    projectRepository.save(project);
+//    return "Project Added Successfully";
+//    }
+//
+//
+//    public String delete(Long projectId) throws ProjectIsNotPresent {
+//    Optional<Project>projectOptional=projectRepository.findById(projectId);
+//    if(projectOptional.isPresent()){
+//     projectRepository.delete(projectOptional.get());
+//    }else{
+//        throw new ProjectIsNotPresent("Project is Not Found");
+//    }
+//    return "Project deleted SucessFully";
+//    }
 }

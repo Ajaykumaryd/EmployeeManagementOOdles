@@ -7,6 +7,7 @@ import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeUpdateDto;
 import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.EmployeeIsNotPresent;
 import com.Task1.OodlesA1.Service.EmployeeService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController  //creates a bean for us
 @RequestMapping(UrlMapping.EMPLOYEE)
+@SecurityRequirement(name ="employee")
 public class EmployeeController {
 
     @Autowired  //Automatic Depedency Injection keeps the Consistency of data

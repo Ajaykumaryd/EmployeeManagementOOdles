@@ -36,6 +36,7 @@ public class EmployeeService {
         e.setDesignation(employeeCreateDto.getDesignation());
         e.setGender(employeeCreateDto.getGender());
         e.setDepartmentType(employeeCreateDto.getDepartmentType());
+
         if(employeeCreateDto.getCompanyId()!=null){
             Optional<Company>companyOptional=companyRepository.findById(employeeCreateDto.getCompanyId());
             if(companyOptional.isPresent()){
@@ -43,30 +44,29 @@ public class EmployeeService {
               e.setCompany(company);
             }
         }
-     if(employeeCreateDto.getDepartmentId()==null) {
-         throw new DepartmentIsNotPresent("Department is not found");
-     }
-        Optional<Department>department=departmentRepository.findById(employeeCreateDto.getDepartmentId());
-        if(department.isPresent()){
-            e.setDepartment(department.get());
+
+        if(employeeCreateDto.getDepartmentId()!=null){
+            Optional<Department>departmentOptional=departmentRepository.findById(employeeCreateDto.getDepartmentId());
+            if(departmentOptional.isPresent()){
+
+                //setting primary key
+                e.setDepartment(departmentOptional.get());
+            }
+            Department department=departmentOptional.get();
+            department.getEmployeeList().add(e);
+//            departmentRepository.save(department);
         }
-        department.get().getEmployeeList().add(e);
-
-    //we only save parent child saved automatically
-    departmentRepository.save(department.get());
 
 
-    employeeRepository.save(e);
+
     return "Employee has been Added";
     }
 
 
     public String deleteEmp(Integer empID) throws EmployeeIsNotPresent{
-
         Optional<Employee> existingEmployee = employeeRepository.findById(Long.valueOf(empID));
         if (existingEmployee.isPresent()) {
             employeeRepository.delete(existingEmployee.get());
-
             return "record deleted successfully";
         } else {
             throw new EmployeeIsNotPresent("Employee is not Present with this Id"+empID);

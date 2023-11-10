@@ -20,9 +20,9 @@ public class Project {
 
     private Date endDate;
 
-    @OneToOne
-    @JoinColumn
-    private Employee employee;
+//    @OneToOne
+//    @JoinColumn
+//    private Employee employee;
 
 
 
