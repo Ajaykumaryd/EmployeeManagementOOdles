@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(UrlMapping.COMPANY)
-@SecurityRequirement(name ="employee")
 public class CompanyController {
    @Autowired
    private CompanyService companyService;

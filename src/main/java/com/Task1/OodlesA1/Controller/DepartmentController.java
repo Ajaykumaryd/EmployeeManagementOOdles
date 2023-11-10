@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(UrlMapping.DEPARTMENT)
-@SecurityRequirement(name ="employee")
+
 public class DepartmentController {
 
     @Autowired

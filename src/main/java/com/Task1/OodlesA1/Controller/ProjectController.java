@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(UrlMapping.PROJECT)
-@SecurityRequirement(name ="employee")
+
 public class ProjectController {
 
 

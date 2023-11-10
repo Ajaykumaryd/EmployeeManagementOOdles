@@ -7,4 +7,5 @@ public class UrlMapping {
     public static final String DEPARTMENT="/api/v1/department";
     public static final String PROJECT="/api/v1/project";
 
+
 }

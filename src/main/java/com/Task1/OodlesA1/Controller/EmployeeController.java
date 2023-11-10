@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController  //creates a bean for us
 @RequestMapping(UrlMapping.EMPLOYEE)
-@SecurityRequirement(name ="employee")
 public class EmployeeController {
 
     @Autowired  //Automatic Depedency Injection keeps the Consistency of data

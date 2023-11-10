@@ -18,8 +18,6 @@ public class DepartmentService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
-
-
     @Autowired
     private CompanyRepository companyRepository;
     @Autowired
