@@ -4,10 +4,10 @@ import com.Task1.OodlesA1.Constants.UrlMapping;
 import com.Task1.OodlesA1.Domain.Employee;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeCreateDto;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeUpdateDto;
+import com.Task1.OodlesA1.Exceptions.CompanyIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
-import com.Task1.OodlesA1.Exceptions.EmployeeIsNotPresent;
+import com.Task1.OodlesA1.Exceptions.EmployeeException;
 import com.Task1.OodlesA1.Service.EmployeeService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,21 +22,19 @@ public class EmployeeController {
 
     //API to add Employee
     @PostMapping()
-    public String add(@RequestBody EmployeeCreateDto employeeCreateDto) throws DepartmentIsNotPresent {
+    public String add(@RequestBody EmployeeCreateDto employeeCreateDto) throws DepartmentIsNotPresent,CompanyIsNotPresent {
     String result= employeeService.add(employeeCreateDto);
     return result;
     }
 
     @DeleteMapping()
-    public String delete(@RequestParam Integer EId ) throws EmployeeIsNotPresent {
+    public String delete(@RequestParam Integer EId ) {
 
-        try {
-            String res= employeeService.deleteEmp(EId);
-            return res;
-        }catch (EmployeeIsNotPresent employeeIsNotPresent){
-            return employeeIsNotPresent.getMessage();
-        }
-    }
+           String res = employeeService.deleteEmp(EId);
+           return res;
+       }
+
+
 
 
     @GetMapping()
@@ -47,7 +45,7 @@ public class EmployeeController {
 
     //get employee details by id;
     @GetMapping("/{eid}")
-    public Employee getById(@PathVariable Integer eid){
+    public Employee getById(@PathVariable Integer eid) throws EmployeeException {
         Employee e= employeeService.getById(eid);
         return e;
     }

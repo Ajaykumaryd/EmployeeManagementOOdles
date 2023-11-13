@@ -5,8 +5,9 @@ import com.Task1.OodlesA1.Domain.Department;
 import com.Task1.OodlesA1.Domain.Employee;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeCreateDto;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeUpdateDto;
+import com.Task1.OodlesA1.Exceptions.CompanyIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
-import com.Task1.OodlesA1.Exceptions.EmployeeIsNotPresent;
+import com.Task1.OodlesA1.Exceptions.EmployeeException;
 import com.Task1.OodlesA1.Repository.CompanyRepository;
 import com.Task1.OodlesA1.Repository.DepartmentRepository;
 import com.Task1.OodlesA1.Repository.EmployeeRepository;
@@ -27,8 +28,7 @@ public class EmployeeService {
     @Autowired
    private EmployeeRepository employeeRepository;
 
-    public String add(EmployeeCreateDto employeeCreateDto) throws DepartmentIsNotPresent
-    {
+    public String add(EmployeeCreateDto employeeCreateDto)throws  CompanyIsNotPresent,DepartmentIsNotPresent {
         Employee e=new Employee();
         e.setEmpName(employeeCreateDto.getName());
         e.setAge(employeeCreateDto.getAge());
@@ -37,39 +37,41 @@ public class EmployeeService {
         e.setGender(employeeCreateDto.getGender());
         e.setDepartmentType(employeeCreateDto.getDepartmentType());
 
-        if(employeeCreateDto.getCompanyId()!=null){
-            Optional<Company>companyOptional=companyRepository.findById(employeeCreateDto.getCompanyId());
-            if(companyOptional.isPresent()){
-                Company company=companyOptional.get();
-              e.setCompany(company);
-            }
+        Optional<Department>departmentOptional=departmentRepository.findById(employeeCreateDto.getDepartmentId());
+        if(departmentOptional.isEmpty()){
+            throw new DepartmentIsNotPresent("Department not found with this ID "+employeeCreateDto.getDepartmentId());
+        }
+        Department department=departmentOptional.get();
+
+
+        //we only save parent child get saved automatically
+        Optional<Company>company=companyRepository.findById(employeeCreateDto.getCompanyId());
+        Company company1=company.get();
+        if(company.isPresent()){
+            e.setCompany(company.get());
+        }else{
+            throw new CompanyIsNotPresent("Company not found");
         }
 
-        if(employeeCreateDto.getDepartmentId()!=null){
-            Optional<Department>departmentOptional=departmentRepository.findById(employeeCreateDto.getDepartmentId());
-            if(departmentOptional.isPresent()){
+        e.setDepartment(department);
+        e.setCompany(company.get());
+//        e=employeeRepository.save(e);
 
-                //setting primary key
-                e.setDepartment(departmentOptional.get());
-            }
-            Department department=departmentOptional.get();
-            department.getEmployeeList().add(e);
-//            departmentRepository.save(department);
-        }
-
-
-
-    return "Employee has been Added";
+        company1.getEmployeeList().add(e);
+        department.getEmployeeList().add(e);
+        companyRepository.save(company.get());
+        departmentRepository.save(department);
+        return "Employee has been Added";
     }
 
 
-    public String deleteEmp(Integer empID) throws EmployeeIsNotPresent{
+    public String deleteEmp(Integer empID) throws EmployeeException{
         Optional<Employee> existingEmployee = employeeRepository.findById(Long.valueOf(empID));
         if (existingEmployee.isPresent()) {
             employeeRepository.delete(existingEmployee.get());
             return "record deleted successfully";
         } else {
-            throw new EmployeeIsNotPresent("Employee is not Present with this Id"+empID);
+            throw new EmployeeException("Employee not Found with this Id");
         }
     }
 
@@ -77,12 +79,12 @@ public class EmployeeService {
      return (List<Employee>) employeeRepository.findAll();
     }
 
-    public Employee getById(Integer eId) {
-        Optional<Employee>employees= employeeRepository.findById(Long.valueOf(eId));
-        if(employees.isPresent()){
-            return employees.get();
-        }else{
-            throw new RuntimeException("Employee not Found");
+    public Employee getById(Integer eId) throws EmployeeException {
+        Optional<Employee> employees = employeeRepository.findById(Long.valueOf(eId));
+        if (employees.isEmpty()) {
+            throw new EmployeeException("Employee is not present with Id");
+        } else {
+          return employees.get();
         }
     }
 
@@ -108,9 +110,6 @@ public class EmployeeService {
             throw new RuntimeException("Employee is not there");
         }
     }
-
-
-
 
 
 

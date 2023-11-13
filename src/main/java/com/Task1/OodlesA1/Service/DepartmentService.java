@@ -48,5 +48,14 @@ public class DepartmentService {
     }
 
 
+    public String delete(Long departmentId) throws DepartmentIsNotPresent {
+        Optional<Department> departmentOptional = departmentRepository.findById(departmentId);
+        if (departmentOptional.isPresent()) {
+            departmentRepository.delete(departmentOptional.get());
+            return "department deleted";
+        } else {
+            throw new DepartmentIsNotPresent("department is not Present with Id " + departmentId);
+        }
+    }
 
 }

@@ -30,15 +30,12 @@ public class CompanyService {
     }
 
 
-    public String deleted(Integer cId) {
+    public String deleted(Integer cId){
         Optional<Company> company = companyRepository.findById(Long.valueOf(cId));
-        if (company.isPresent()) {
             companyRepository.deleteById(Long.valueOf(cId));
-            return "Company deleted";
-        } else {
-            return "Company is not there";
+            return "Company Deleted";
         }
-    }
+
 
     public String change(CompanyUpdateDto companyUpdateDto) throws CompanyIsNotPresent {
         Optional<Company> company = companyRepository.findById((long) Math.toIntExact(companyUpdateDto.getCid()));
@@ -60,4 +57,10 @@ public class CompanyService {
        return companyList;
     }
 
+
+    public Company get(Long companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+            return company.get();
+
+    }
 }

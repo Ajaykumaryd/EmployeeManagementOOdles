@@ -22,11 +22,14 @@ public class Company {
 
     private Integer noOfEmployees;
 
-    @OneToMany(mappedBy = "company",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company",cascade =CascadeType.ALL)
     List<Department>departmentList=new ArrayList<>();
 
     @OneToMany(mappedBy = "company",cascade = CascadeType.ALL)
     List<Employee>employeeList=new ArrayList<>();
+
+
+
 
 
 

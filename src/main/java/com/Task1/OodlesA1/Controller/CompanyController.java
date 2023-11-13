@@ -27,7 +27,7 @@ public class CompanyController {
 
     //API to remove Company
     @DeleteMapping()
-    public ResponseEntity<String>  delete(@RequestParam Integer cId){
+    public ResponseEntity<String>  delete(@RequestParam Integer cId) throws CompanyIsNotPresent {
     String result=companyService.deleted(cId);
     return new ResponseEntity<>(result,HttpStatus.ACCEPTED);
     }
@@ -49,6 +49,11 @@ public class CompanyController {
     }
 
 
+     @GetMapping("/get")
+     public  ResponseEntity<Company> getCompany(@RequestParam Long companyId){
+     Company company=companyService.get(companyId);
+     return new ResponseEntity<>(company,HttpStatus.ACCEPTED);
+ }
 
 
 

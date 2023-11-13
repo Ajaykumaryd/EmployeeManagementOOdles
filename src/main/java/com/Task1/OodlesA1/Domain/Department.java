@@ -28,9 +28,8 @@ public class Department {
     private Company company;
 
 
-    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department",cascade =CascadeType.ALL)
     List<Employee>employeeList=new ArrayList<>();
-
 
 
 }
