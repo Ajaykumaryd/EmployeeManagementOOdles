@@ -22,16 +22,13 @@ public class Company {
 
     private Integer noOfEmployees;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company",cascade =CascadeType.ALL)
     List<Department>departmentList=new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company",cascade = CascadeType.ALL)
     List<Employee>employeeList=new ArrayList<>();
-
-
-
-
-
 
 
 }

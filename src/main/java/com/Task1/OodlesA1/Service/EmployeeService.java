@@ -5,6 +5,7 @@ import com.Task1.OodlesA1.Domain.Department;
 import com.Task1.OodlesA1.Domain.Employee;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeCreateDto;
 import com.Task1.OodlesA1.Dtos.RequestDto.EmployeeDtos.EmployeeUpdateDto;
+import com.Task1.OodlesA1.Dtos.ResponseDto.GetEmployees;
 import com.Task1.OodlesA1.Exceptions.CompanyIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.EmployeeException;
@@ -14,6 +15,7 @@ import com.Task1.OodlesA1.Repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +57,7 @@ public class EmployeeService {
 
         e.setDepartment(department);
         e.setCompany(company.get());
-//        e=employeeRepository.save(e);
+        e=employeeRepository.save(e);
 
         company1.getEmployeeList().add(e);
         department.getEmployeeList().add(e);
@@ -71,25 +73,21 @@ public class EmployeeService {
             employeeRepository.delete(existingEmployee.get());
             return "record deleted successfully";
         } else {
-            throw new EmployeeException("Employee not Found with this Id");
+            throw new EmployeeException("Employee not Found with this Id "+empID);
         }
     }
 
-    public List<Employee> getList(){
-     return (List<Employee>) employeeRepository.findAll();
-    }
 
     public Employee getById(Integer eId) throws EmployeeException {
         Optional<Employee> employees = employeeRepository.findById(Long.valueOf(eId));
         if (employees.isEmpty()) {
-            throw new EmployeeException("Employee is not present with Id");
+            throw new EmployeeException("Employee is not present");
         } else {
           return employees.get();
         }
     }
 
     public String  change(EmployeeUpdateDto employeeUpdateDto) {
-
         int id=employeeUpdateDto.getId();
         Employee employee= employeeRepository.findById((long) id).get();
         employee.setEmpName(employeeUpdateDto.getName());
@@ -111,9 +109,6 @@ public class EmployeeService {
         }
     }
 
-
-
-
     public String changeName(Integer id, String newName) {
         Optional<Employee>employees= employeeRepository.findById(Long.valueOf(id));
         if(employees.isPresent()){
@@ -125,8 +120,30 @@ public class EmployeeService {
         }
     }
 
-    public List<Employee> getEmployees(Integer age) {
-     List<Employee>employeeList=employeeRepository.findEmployeeWithAgeGreater(age);
-     return employeeList;
+//    public List<Employee> getEmployees(Integer age) {
+//     List<Employee>employeeList=employeeRepository.findEmployeeWithAgeGreater(age);
+//     return employeeList;
+//    }
+
+
+    public List<GetEmployees> getList(Long companyId) {
+        Optional<Company>companyOptional=companyRepository.findById(companyId);
+        Company company=companyOptional.get();
+        List<Employee>employeeList=company.getEmployeeList();
+        List<GetEmployees>getEmployeesList=new ArrayList<>();
+        for (Employee employee: employeeList){
+            GetEmployees getEmployees1=new GetEmployees();
+            getEmployees1.setEmpName(employee.getEmpName());
+            getEmployees1.setAge(employee.getAge());
+            getEmployees1.setEmail(employee.getEmail());
+            getEmployees1.setDepartmentType(employee.getDepartmentType());
+            getEmployees1.setDesignation(employee.getDesignation());
+            getEmployeesList.add(getEmployees1);
+        }
+        return getEmployeesList;
     }
-}
+
+
+    }
+
+

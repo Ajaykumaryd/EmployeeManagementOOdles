@@ -1,6 +1,9 @@
-package com.Task1.OodlesA1.Exceptions;
+package com.Task1.OodlesA1.Controller;
 
+import com.Task1.OodlesA1.Exceptions.CompanyIsNotPresent;
+import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
 import com.Task1.OodlesA1.Exceptions.EmployeeException;
+import com.Task1.OodlesA1.Exceptions.ErrorMessages;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +26,27 @@ public class MyAdviceController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(CompanyIsNotPresent.class)
-    public ResponseEntity<String> CompanyAbsent(CompanyIsNotPresent companyIsNotPresent){
-        return new ResponseEntity<>("Company is not present with Id you want to Get", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorMessages> handleEmployeeException(CompanyIsNotPresent ex) {
+        ErrorMessages errorMessages = new ErrorMessages();
+        errorMessages.setMessage(ex.getMessage());
+        errorMessages.setHTTPStatus(1117);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessages);
     }
-//
-//
-//    @ExceptionHandler(DepartmentIsNotPresent.class)
-//    public ResponseEntity<String>departmentAbsent(DepartmentIsNotPresent departmentIsNotPresent){
-//        return new ResponseEntity<>("Enter Correct to Get Result",HttpStatus.NOT_FOUND);
-//    }
+
+    @ExceptionHandler(DepartmentIsNotPresent.class)
+    public ResponseEntity<ErrorMessages>departmentAbsent(DepartmentIsNotPresent ex){
+        ErrorMessages errorMessages=new ErrorMessages();
+        errorMessages.setMessage(ex.getMessage());
+        errorMessages.setHTTPStatus(1117);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessages);
+    }
 
     @ExceptionHandler(EmployeeException.class)
     public ResponseEntity<ErrorMessages> handleEmployeeException(EmployeeException ex) {
      ErrorMessages errorMessages=new ErrorMessages();
      errorMessages.setMessage(ex.getMessage());
-     errorMessages.setCode(1117);
-     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errorMessages);
+     errorMessages.setHTTPStatus(1117);
+     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessages);
     }
 
 }

@@ -3,9 +3,10 @@ import com.Task1.OodlesA1.Constants.UrlMapping;
 import com.Task1.OodlesA1.Domain.Company;
 import com.Task1.OodlesA1.Dtos.RequestDto.CompanyDtos.CompanyCreateDto;
 import com.Task1.OodlesA1.Dtos.RequestDto.CompanyDtos.CompanyUpdateDto;
+import com.Task1.OodlesA1.Dtos.ResponseDto.GetCompanies;
 import com.Task1.OodlesA1.Exceptions.*;
 import com.Task1.OodlesA1.Service.CompanyService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,10 @@ public class CompanyController {
    private CompanyService companyService;
 
     //API to Add Company
+
+
     @PostMapping()
-    public ResponseEntity<String> Company(@RequestBody CompanyCreateDto companyCreateDto){
+    public ResponseEntity<String> addCompany(@RequestBody CompanyCreateDto companyCreateDto){
     String res=companyService.add(companyCreateDto);
     return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
     }
@@ -43,11 +46,16 @@ public class CompanyController {
     }
 
     @GetMapping()
-    public  ResponseEntity<List<Company>> getListOfCompanies(){
-     List<Company>res=companyService.getList();
+    public  ResponseEntity<List<GetCompanies>> getListOfCompanies(){
+     List<GetCompanies> res=companyService.getList();
      return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/byName")
+    public ResponseEntity<Company>getByname(String companyName){
+    Company company=companyService.getByname(companyName);
+     return new ResponseEntity<>(company,HttpStatus.ACCEPTED);
+    }
 
      @GetMapping("/get")
      public  ResponseEntity<Company> getCompany(@RequestParam Long companyId){

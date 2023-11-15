@@ -52,7 +52,7 @@ public class DepartmentService {
         Optional<Department> departmentOptional = departmentRepository.findById(departmentId);
         if (departmentOptional.isPresent()) {
             departmentRepository.delete(departmentOptional.get());
-            return "department deleted";
+            return "department deleted with Id "+departmentId;
         } else {
             throw new DepartmentIsNotPresent("department is not Present with Id " + departmentId);
         }

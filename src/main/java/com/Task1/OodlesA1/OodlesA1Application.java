@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OodlesA1Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OodlesA1Application.class, args);
+			SpringApplication.run(OodlesA1Application.class, args);
 
 	}
 

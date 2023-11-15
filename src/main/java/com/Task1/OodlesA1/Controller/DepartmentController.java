@@ -7,6 +7,8 @@ import com.Task1.OodlesA1.Exceptions.DepartmentIsNotPresent;
 import com.Task1.OodlesA1.Service.DepartmentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,21 +20,17 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @PostMapping()
-    public String add(@RequestBody DepartmentCreateDto departmentCreateDto) throws CompanyIsNotPresent {
+    public ResponseEntity<String> add(@RequestBody DepartmentCreateDto departmentCreateDto) throws CompanyIsNotPresent {
         try {
             String res = departmentService.add(departmentCreateDto);
-            return res;
+            return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
         } catch (CompanyIsNotPresent companyIsNotPresent) {
-            return companyIsNotPresent.getMessage();
+            return new ResponseEntity<>(companyIsNotPresent.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-
      @DeleteMapping()
-     public String delete(@RequestParam Long departmentId) throws DepartmentIsNotPresent {
-     String res=departmentService.delete(departmentId);
-     return res;
+     public ResponseEntity<String> delete(@RequestParam Long departmentId) throws DepartmentIsNotPresent {
+             String res = departmentService.delete(departmentId);
+             return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+         }
      }
-
-
-
-}

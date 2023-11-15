@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 @Data
 public class ErrorMessages {
+
     private String message;
-    private Integer Code;
+    private Integer HTTPStatus;
 }
