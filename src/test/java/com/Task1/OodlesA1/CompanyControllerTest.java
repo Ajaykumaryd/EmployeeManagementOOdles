@@ -57,7 +57,7 @@ public class CompanyControllerTest {
 
     //get list of companies
     @Test
-    public void getCompanyTest() throws Exception {
+    public void getCompaniesListTest() throws Exception {
         List<GetCompanies> companyList = new ArrayList<>(Arrays.asList(getCompanies, getCompanies1, getGetCompanies2));
         when(companyService.getList()).thenReturn(companyList);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/company")
@@ -83,7 +83,7 @@ public class CompanyControllerTest {
 
 
     @Test
-    public void testGetCompany() {
+    public void testGetCompanyById() {
         // Mocking the behavior of the companyService
         Long companyId = 1L;
         GetCompanies getCompanies = new GetCompanies("Amazon", "Delhi", 200);
@@ -96,7 +96,7 @@ public class CompanyControllerTest {
         // Calling the controller method
         ResponseEntity<Company> responseEntity = companyController.getCompany(companyId);
         // Verifying the response
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(company, responseEntity.getBody());
         assertEquals(company.getCompanyName(), Objects.requireNonNull(responseEntity.getBody()).getCompanyName());
         assertEquals(company.getCompanyName(), Objects.requireNonNull(responseEntity.getBody()).getCompanyName());
@@ -137,7 +137,6 @@ public class CompanyControllerTest {
         assert responseEntity.getStatusCode() == HttpStatus.ACCEPTED;
         assert Objects.equals(responseEntity.getBody(), "Deleted");
     }
-
     @Test
     public void updateCompany() throws Exception{
         CompanyUpdateDto companyUpdateDto=new CompanyUpdateDto();
@@ -146,7 +145,6 @@ public class CompanyControllerTest {
         companyUpdateDto.setLocation("Gurugram");
         companyUpdateDto.setNoOfEmployees(100);
         when(companyService.change(companyUpdateDto)).thenReturn("Updated");
-
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/company")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"Cid\":\"1\", \"companyName\":\"oodles\",\"location\":\"Gurugram\",\"noOfEmployees\":100}"))
@@ -156,5 +154,6 @@ public class CompanyControllerTest {
         assertEquals("oodles",companyUpdateDto.getCompanyName());
         assert companyUpdateDtoResponseEntity.getStatusCode()==HttpStatus.ACCEPTED;
     }
-
 }
+
+
