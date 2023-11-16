@@ -21,7 +21,6 @@ public class CompanyController {
 
     //API to Add Company
 
-
     @PostMapping()
     public ResponseEntity<String> addCompany(@RequestBody CompanyCreateDto companyCreateDto){
     String res=companyService.add(companyCreateDto);
@@ -35,33 +34,36 @@ public class CompanyController {
     return new ResponseEntity<>(result,HttpStatus.ACCEPTED);
     }
 
-    @PutMapping()
-    public ResponseEntity<String>  update(@RequestBody CompanyUpdateDto companyUpdateDto) throws CompanyIsNotPresent {
-    try {
-     String res = companyService.change(companyUpdateDto);
-     return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
-    }catch (CompanyIsNotPresent companyIsNotPresent){
-     return new ResponseEntity<>(companyIsNotPresent.getMessage(),HttpStatus.BAD_REQUEST);
-    }
+     @PutMapping()
+     public ResponseEntity<String>  update(@RequestBody CompanyUpdateDto companyUpdateDto) throws CompanyIsNotPresent {
+      try {
+      String res = companyService.change(companyUpdateDto);
+      return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
+      }
+      catch (CompanyIsNotPresent companyIsNotPresent){
+      return new ResponseEntity<>(companyIsNotPresent.getMessage(),HttpStatus.BAD_REQUEST);
+      }
     }
 
-    @GetMapping()
-    public  ResponseEntity<List<GetCompanies>> getListOfCompanies(){
+     @GetMapping()
+     public  ResponseEntity<List<GetCompanies>> getListOfCompanies(){
      List<GetCompanies> res=companyService.getList();
-     return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
-    }
+     return new ResponseEntity<>(res,HttpStatus.OK);
+     }
 
-    @GetMapping("/byName")
-    public ResponseEntity<Company>getByname(String companyName){
-    Company company=companyService.getByname(companyName);
-     return new ResponseEntity<>(company,HttpStatus.ACCEPTED);
-    }
+     @GetMapping("/byName")
+     public ResponseEntity<Company>getByname(String companyName){
+     Company company=companyService.getByname(companyName);
+     return new ResponseEntity<>(company,HttpStatus.OK);
+     }
 
      @GetMapping("/get")
      public  ResponseEntity<Company> getCompany(@RequestParam Long companyId){
      Company company=companyService.get(companyId);
-     return new ResponseEntity<>(company,HttpStatus.ACCEPTED);
- }
+     return new ResponseEntity<>(company,HttpStatus.OK);
+     }
+
+
 
 
 

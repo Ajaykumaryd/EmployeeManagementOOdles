@@ -24,11 +24,11 @@ class OodlesA1ApplicationTests {
 	public void testAddCompany() {
 		//mockito testing it is we are making dummy data of company and checking
 		CompanyCreateDto companyCreateDto = new CompanyCreateDto();
-		companyCreateDto.setCompanyName("Amazon");
-		companyCreateDto.setLocation("Delhi");
+		companyCreateDto.setCompanyName("Choco");
+		companyCreateDto.setLocation("London");
 		companyCreateDto.setNoOfEmployees(20);
 		ResponseEntity<String> ans = companyController.addCompany(companyCreateDto);
-		ResponseEntity<Company> companyResponse = companyController.getByname("Amazon");
+		ResponseEntity<Company> companyResponse = companyController.getByname("Choco");
 		if (Objects.nonNull(companyResponse)) {
 			assertEquals(20, Objects.requireNonNull(companyResponse.getBody()).getNoOfEmployees());
 		}else{
@@ -36,7 +36,7 @@ class OodlesA1ApplicationTests {
 			}
 		}
 
-		//get employees by company's name
+
 
 
 

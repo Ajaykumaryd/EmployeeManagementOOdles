@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.webjars.NotFoundException;
 
 import java.util.Optional;
 
@@ -42,8 +43,8 @@ public class AuthenticationService {
              .token(jwtToken).message("User Registered Successfully").HttpStatus(200).build();
    }
 
-       public AuthenticationResponse authenticate(AuthenticationRequest request) {
-//           try {
+       public AuthenticationResponse authenticate(AuthenticationRequest request) throws Exception {
+           try {
                authenticationManager.authenticate(
                        new UsernamePasswordAuthenticationToken(
                                request.getEmail(),
@@ -51,22 +52,23 @@ public class AuthenticationService {
                        )
                );
                var user = repository.findByEmail(request.getEmail());
-              if(user.isPresent()) {
-                  User user1 = user.get();
-                  var jwtToken = jwtService.generateToken(user1);
-                  return AuthenticationResponse.builder()
-                          .token(jwtToken)
-                          .HttpStatus(200)
-                          .message("Token Generated Successfully")
-                          .build();
-//          } } catch (Exception e) {
-              }else{  return AuthenticationResponse.builder()
-                       .token(null)
-                       .HttpStatus(403)
-                       .message("Authentication failed")
-                       .build();
+               if (user.isPresent()) {
+                   User user1 = user.get();
+                   var jwtToken = jwtService.generateToken(user1);
+                   return AuthenticationResponse.builder()
+                           .token(jwtToken)
+                           .HttpStatus(200)
+                           .message("Token Generated Successfully")
+                           .build();
+               }else{
+                     throw new NotFoundException("User not Found");
+               }
+           }catch (NotFoundException notFoundException){
+                   throw new NotFoundException("Exception not Found");
            }
-
+           catch (Exception exception) {
+                   throw new Exception("Exception Found");
+           }
        }
 }
 
