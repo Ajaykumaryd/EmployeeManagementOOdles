@@ -67,6 +67,7 @@ public class AuthenticationService {
                    throw new NotFoundException("Exception not Found");
            }
            catch (Exception exception) {
+
                    throw new Exception("Exception Found");
            }
        }
