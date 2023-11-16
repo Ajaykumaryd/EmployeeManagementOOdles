@@ -36,14 +36,14 @@ public class CompanyController {
 
      @PutMapping()
      public ResponseEntity<String>  update(@RequestBody CompanyUpdateDto companyUpdateDto) throws CompanyIsNotPresent {
-      try {
+//      try {
       String res = companyService.change(companyUpdateDto);
       return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
+//      }
+//      catch (CompanyIsNotPresent companyIsNotPresent){
+//      return new ResponseEntity<>(companyIsNotPresent.getMessage(),HttpStatus.BAD_REQUEST);
       }
-      catch (CompanyIsNotPresent companyIsNotPresent){
-      return new ResponseEntity<>(companyIsNotPresent.getMessage(),HttpStatus.BAD_REQUEST);
-      }
-    }
+
 
      @GetMapping()
      public  ResponseEntity<List<GetCompanies>> getListOfCompanies(){
@@ -62,13 +62,4 @@ public class CompanyController {
      Company company=companyService.get(companyId);
      return new ResponseEntity<>(company,HttpStatus.OK);
      }
-
-
-
-
-
-
-
-
-
 }

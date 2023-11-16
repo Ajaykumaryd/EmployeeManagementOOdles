@@ -34,14 +34,5 @@ class OodlesA1ApplicationTests {
 		}else{
 			assertEquals(20, 0);
 			}
-		}
-
-
-
-
-
-
-
-
-
+	     }
 	}

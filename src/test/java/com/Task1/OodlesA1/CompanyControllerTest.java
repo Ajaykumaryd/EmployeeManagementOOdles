@@ -2,6 +2,7 @@ package com.Task1.OodlesA1;
 import com.Task1.OodlesA1.Controller.CompanyController;
 import com.Task1.OodlesA1.Domain.Company;
 import com.Task1.OodlesA1.Dtos.RequestDto.CompanyDtos.CompanyCreateDto;
+import com.Task1.OodlesA1.Dtos.RequestDto.CompanyDtos.CompanyUpdateDto;
 import com.Task1.OodlesA1.Dtos.ResponseDto.GetCompanies;
 import com.Task1.OodlesA1.Service.CompanyService;
 import org.junit.Before;
@@ -137,12 +138,23 @@ public class CompanyControllerTest {
         assert Objects.equals(responseEntity.getBody(), "Deleted");
     }
 
+    @Test
+    public void updateCompany() throws Exception{
+        CompanyUpdateDto companyUpdateDto=new CompanyUpdateDto();
+        companyUpdateDto.setCid(1L);
+        companyUpdateDto.setCompanyName("oodles");
+        companyUpdateDto.setLocation("Gurugram");
+        companyUpdateDto.setNoOfEmployees(100);
+        when(companyService.change(companyUpdateDto)).thenReturn("Updated");
 
-
-
-
-
-
-
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/company")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"Cid\":\"1\", \"companyName\":\"oodles\",\"location\":\"Gurugram\",\"noOfEmployees\":100}"))
+                .andExpect(status().isAccepted());
+        ResponseEntity<String>companyUpdateDtoResponseEntity=companyController.update(companyUpdateDto);
+        assertEquals("Gurugram",companyUpdateDto.getLocation());
+        assertEquals("oodles",companyUpdateDto.getCompanyName());
+        assert companyUpdateDtoResponseEntity.getStatusCode()==HttpStatus.ACCEPTED;
+    }
 
 }
